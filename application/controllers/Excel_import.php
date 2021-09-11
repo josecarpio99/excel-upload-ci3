@@ -101,7 +101,6 @@ class Excel_import extends CI_Controller {
     {
         $usuarios = $this->input->post('usuarios');
         foreach($usuarios as $usuario) {
-            unset($usuario['perfil'], $usuario['idUsuario']);
             $usuario['fechaAlta'] = date('Y-m-d H:i' ,strtotime($usuario['fechaAlta']));
             $usuario['fechaBaja'] = date('Y-m-d H:i' ,strtotime($usuario['fechaBaja']));
             $this->db->insert('usuarios', $usuario);
@@ -114,17 +113,9 @@ class Excel_import extends CI_Controller {
         $usuarios = $this->input->post('usuarios');
         $this->db = $this->load->database( 'zf2xzpil_tg__admin' ,true);
         foreach($usuarios as $usuario) {
-            $this->db->insert('usuarios', [
-                'idUsuario' => $usuario['idUsuario'],
-                'usuario' => $usuario['usuario'],
-                'email' => $usuario['email'],
-                'password' => $usuario['password'],
-                'perfil' => $usuario['perfil'],
-                'idIdioma' => $usuario['idIdioma'],
-                'fechaAlta' => date('Y-m-d H:i' ,strtotime($usuario['fechaAlta'])),
-                'fechaBaja' => date('Y-m-d H:i' ,strtotime($usuario['fechaBaja'])),
-                'idEmpresa' => $usuario['idEmpresa'],
-            ]);
+            $usuario['fechaAlta'] = date('Y-m-d H:i' ,strtotime($usuario['fechaAlta']));
+            $usuario['fechaBaja'] = date('Y-m-d H:i' ,strtotime($usuario['fechaBaja']));
+            $this->db->insert('usuarios', $usuario);         
         }
         echo json_encode(["status" => "success"]);
     }

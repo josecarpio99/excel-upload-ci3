@@ -96,6 +96,7 @@
 
 <script>
     const usuarios = <?= json_encode($usuarios) ?>;
+    console.log(usuarios);
     const btnSalida1 = document.querySelector('#submit-salida-1-btn');   
     const btnSalida2 = document.querySelector('#submit-salida-2-btn');   
     addEventListener('DOMContentLoaded', (e) => {
@@ -108,10 +109,28 @@
         e.preventDefault();
         btnSalida1.disabled = true;
         let endpoint = '<?= base_url('excel/store_admin_users') ?>';
+        let = usersData = [];
+        usuarios.forEach( user => {
+            usersData = [
+                ...usersData,
+                {
+                   idUsuario: user.idUsuario,
+                   usuario: user.usuario,
+                   email: user.email,
+                   password: user.password,
+                   estado: user.estado,
+                   perfil: user.perfil,
+                   idIdioma: user.idIdioma,
+                   fechaAlta: user.fechaAlta,
+                   fechaBaja: user.fechaBaja,
+                   idEmpresa: user.idEmpresa 
+                }
+            ];
+        });        
         $.ajax({
             url:endpoint,
             method: 'post',
-            data: {usuarios: usuarios},
+            data: {usuarios: usersData},
             dataType: 'json',
             success: function(res){
                 console.log(res);                  
@@ -128,10 +147,23 @@
         e.preventDefault();
         btnSalida2.disabled = true;
         let endpoint = '<?= base_url('excel/store_users') ?>';
+        let usersData = [];
+        
+        usuarios.forEach( user => {            
+            let {
+                idUsuario,
+                perfil,
+                ...singleUser
+            } = user;
+            usersData = [
+                ...usersData, 
+                singleUser                
+            ];
+        });        
         $.ajax({
             url:endpoint,
             method: 'post',
-            data: {usuarios: usuarios},
+            data: {usuarios: usersData},
             dataType: 'json',
             success: function(res){
                 console.log(res);                  
