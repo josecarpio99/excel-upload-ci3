@@ -47,9 +47,9 @@ class Excel_import extends CI_Controller {
 			$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
             $worksheet = $spreadsheet->getActiveSheet();
                     
-            $highestRow = $worksheet->getHighestRow(); // e.g. 10
-            $highestColumn = $worksheet->getHighestColumn(); // e.g 'F'
-            $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn); // e.g. 5
+            $highestRow = $worksheet->getHighestRow();
+            $highestColumn = $worksheet->getHighestColumn();
+            $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
             $data = [];
             $rowStart = $this->input->post('index-start');
@@ -81,8 +81,8 @@ class Excel_import extends CI_Controller {
                     'tipo' => $isAdmin === 'Y' ? 2 : 0,
                     'imagen' => '-',
                     'idIdioma' => 1,
-                    'fechaAlta' => date('d/m/Y H:i'),
-                    'fechaBaja' => date('d/m/Y H:i'),
+                    'fechaAlta' => date('d-m-Y H:i'),
+                    'fechaBaja' => date('d-m-Y H:i'),
                     'idEmpresa' => $idEmpresa,
                     'idUsuarioAdmin' => $maxIdUsuario,
                 ];                
@@ -110,7 +110,7 @@ class Excel_import extends CI_Controller {
 
     public function storeAdminUsers()
     {
-        $usuarios = $this->input->post('usuarios');
+        $usuarios = $this->input->post('usuarios');       
         $this->db = $this->load->database( 'zf2xzpil_tg__admin' ,true);
         foreach($usuarios as $usuario) {
             $usuario['fechaAlta'] = date('Y-m-d H:i' ,strtotime($usuario['fechaAlta']));

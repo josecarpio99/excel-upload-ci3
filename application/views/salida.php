@@ -57,13 +57,33 @@
                 <th scope="col">tipo</th>
                 <th scope="col" style="min-width: 140px;">fechaAlta</th>
                 <th scope="col" style="min-width: 140px;">fechaBaja</th>
+                <th scope="col">imagen</th>
                 <th scope="col">idIdioma</th>
                 <th scope="col">idEmpresa</th>
                 <th scope="col">idUsuarioAdmin</th>
                 </tr>
             </thead>
             <tbody>
-                <?php $count = 1; ?>
+                <tr>
+                    <td>1</td>
+                    <td>_share</td>
+                    <td>share</td>
+                    <td>share</td>
+                    <td>0</td>
+                    <td>share@share</td>
+                    <td>0</td>
+                    <td>1</td>
+                    <td>85602</td>
+                    <td>Activo</td>
+                    <td>1</td>
+                    <td><?= $usuarios[0]['fechaAlta'] ?></td>
+                    <td><?= $usuarios[0]['fechaBaja'] ?></td>
+                    <td>-</td>
+                    <td>1</td>
+                    <td><?= $usuarios[0]['idEmpresa'] ?></td>
+                    <td>-1</td>
+                </tr>
+                <?php $count = 2; ?>
                 <?php foreach($usuarios as $usuario): ?>
                     <tr>
                         <td><?= $count ?></td>
@@ -79,6 +99,7 @@
                         <td><?= $usuario['tipo'] ?></td>
                         <td><?= $usuario['fechaAlta'] ?></td>
                         <td><?= $usuario['fechaBaja'] ?></td>
+                        <td><?= $usuario['imagen'] ?></td>
                         <td><?= $usuario['idIdioma'] ?></td>
                         <td><?= $usuario['idEmpresa'] ?></td>
                         <td><?= $usuario['idUsuarioAdmin'] ?></td>
@@ -96,7 +117,7 @@
 
 <script>
     const usuarios = <?= json_encode($usuarios) ?>;
-    console.log(usuarios);
+
     const btnSalida1 = document.querySelector('#submit-salida-1-btn');   
     const btnSalida2 = document.querySelector('#submit-salida-2-btn');   
     addEventListener('DOMContentLoaded', (e) => {
@@ -107,7 +128,7 @@
     function submitSalida1(e)
     {
         e.preventDefault();
-        btnSalida1.disabled = true;
+        btnSalida1.disabled = true;        
         let endpoint = '<?= base_url('excel/store_admin_users') ?>';
         let = usersData = [];
         usuarios.forEach( user => {
@@ -137,6 +158,7 @@
                 alert('Datos almacenados con éxito');
             },
             error: function(err) {
+                console.log(err); 
                 alert('Algo salio mal');
             }
         });  
@@ -148,6 +170,8 @@
         btnSalida2.disabled = true;
         let endpoint = '<?= base_url('excel/store_users') ?>';
         let usersData = [];
+        //Add share user
+        usersData.push(getShareUser());
         
         usuarios.forEach( user => {            
             let {
@@ -173,6 +197,28 @@
                 alert('Algo salio mal');
             }
         });  
+    }
+
+    function getShareUser()
+    {
+        return {            
+            usuario:    '_share',
+            apellido:    'share',
+            nombre:    'share',
+            dni:    0,
+            email:    'share@share',
+            celular:    0,
+            idSucursal:    1,
+            password:    '85602',
+            estado:    'Activo',
+            tipo:    1,
+            fechaAlta:    usuarios[0].fechaAlta,
+            fechaBaja:    usuarios[0].fechaBaja,
+            imagen:    '-',
+            idIdioma:    1,
+            idEmpresa:    usuarios[0].idEmpresa,
+            idUsuarioAdmin:    -1,
+        };
     }
     
 </script>
